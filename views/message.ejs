@@ -1,0 +1,71 @@
+<%include nav-logged%>
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chat-window">
+          <div id="messages"></div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="input-group enter-chat-message">
+          <input type="text" id="chat-input" class="form-control" placeholder="Chat Message...">
+          <button type="button" class="btn btn-md btn-dark" name="button" id="send" style="margin-left:10px;">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<!-- <script src="/js/message.js"></script> -->
+
+<script>
+//jshint esversion:6
+  $(function() {
+    const socket = io.connect();
+    let chatInput = $('#chat-input');
+    let send = $('#send');
+
+    // handle the output from server
+    console.log('Connected to socket.');
+    socket.on('output', function(messages) {
+        messages.forEach(function(message) {
+          $('#messages').append($('<div class="msg new-chat-message">').html(message));
+          $('.chat-window').scrollTop($('#messages').height());
+        });
+    });
+
+    // handle keyboard enter button being pressed
+    chatInput.keydown(function(event) {
+      if (event.which == 13) {
+        event.preventDefault();
+
+        // ensure message not empty
+        if (chatInput.val() !== '') {
+                    console.log('Emmited a message from input');
+          socket.emit('input', {
+            message: chatInput.val()
+          });
+
+          chatInput.val('');
+        }
+      }
+    });
+
+    // handle submit chat message button being clicked
+    send.on('click', function(event) {
+      event.preventDefault();
+
+      // ensure message not empty
+      if (chatInput.val() !== '') {
+        socket.emit('input', {
+          message: chatInput.val()
+        });
+        console.log('Emmited a message from input');
+        chatInput.val('');
+      }
+    });
+  });
+</script>

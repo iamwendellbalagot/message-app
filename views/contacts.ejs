@@ -1,0 +1,12 @@
+<%include nav-logged%>
+
+<div class="container contacts-div">
+  <h4>Welcome <%= name %></h4><hr>
+  <div class="">
+    <%contacts.forEach(function(name){%>
+      <div class="">
+        <a class="btn btn-block btn-dark contacts" href="/message/<%=name.contactId%>"><%=name.name%></a>
+      </div>
+    <%});%>
+  </div>
+</div>

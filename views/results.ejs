@@ -1,0 +1,14 @@
+<%include nav-logged%>
+
+<div class="container-fluid" style="margin-top:50px;">
+  <h4>Results:</h4>
+  <%if(uname === ""){%>
+    <hr><h5 style=" margin-top:30px;display:inline;">No user found.</h5>
+  <%}%>
+  <%if (uname != ""){%>
+    <form class="" action="/adduser" method="post">
+      <hr><h5 style=" margin-top:30px;display:inline;"><%=uname%></h5>
+      <button type="submit" name="add" value ="<%=id%>"class="btn btn-md btn-dark" style="position:relative;margin: 0 10px 0 100px;">Add contact</button>
+    </form>
+  <%}%>
+</div>
